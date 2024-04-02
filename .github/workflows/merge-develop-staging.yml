@@ -50,7 +50,7 @@ jobs:
                 git checkout nonprod
             - name: Merge develop to nonprod
               run: |
-                git merge develop
+                git merge develop --allow-unrelated-histories
             - name: Push changes to nonprod
               run: |
                 git push origin nonprod
