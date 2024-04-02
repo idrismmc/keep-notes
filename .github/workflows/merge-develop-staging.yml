@@ -45,6 +45,8 @@ jobs:
                 token: ${{ secrets.GITHUB_TOKEN }}
             - name: Merge Development branch into Non-Production
               run: |
+                git config --global user.name "github-actions[bot]"
+                git config --global user.email ""
                 git merge origin/develop --allow-unrelated-histories
                 git push origin nonprod
 
