@@ -1,0 +1,22 @@
+name: Automerge PR to Nonprod
+on:
+  pull_request:
+    branches:
+        - nonprod
+jobs:
+    run-unit-test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+            - name: Run unit tests
+              run: |
+                pytest
+            - name: Automerge PR
+              uses: pascalgn/automerge-action@v0.9.0
+              with:
+                github-token: ${{ secrets.GITHUB_TOKEN }}
+                commit-message: 'Automerge PR to Nonprod'
+                branch: nonprod
+                pull-number: ${{ github.event.number }}
+                # delete-branch: true
