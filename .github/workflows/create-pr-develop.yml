@@ -10,12 +10,15 @@ jobs:
         steps:
             - name: Pull Request Action
               uses: vsoch/pull-request-action@master
-              with:
-                    github_token: ${{ secrets.GITHUB_TOKEN }}
-                    branch: develop
-                    title: Create Pull Request for develop to nonprod branch
-                    body: |
-                        This is an automated pull request to merge develop into nonprod
-                    labels: |
-                        - automerge                  
+              env: 
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                    GITHUB_REPOSITORY: ${{ github.repository }}
+                    GITHUB_ACTOR: ${{ github.actor }}
+                    GITHUB_REF: ${{ github.ref }}
+                    GITHUB_SHA: ${{ github.sha }}
+                    GITHUB_EVENT_NAME: ${{ github.event_name }}
+                    GITHUB_EVENT_PATH: ${{ github.event_path }}
+                    GITHUB_WORKSPACE: ${{ github.workspace }}
+                    GITHUB_HEAD_REF: develop
+                    GITHUB_BASE_REF: nonprod                  
             
