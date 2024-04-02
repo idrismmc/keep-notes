@@ -13,6 +13,12 @@ jobs:
     test_schedule: 
         runs-on: ubuntu-latest
         steps:
+            - name: Pull Request Action
+              uses: vsoch/pull-request-action@master
+              env: 
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                BRANCH_PREFIX: "develop"
+                PULL_REQUEST_BRANCH: "nonprod"
             - name: Checkout code
               uses: actions/checkout@v2
             - name: Set up Python 3.10.4
@@ -30,9 +36,5 @@ jobs:
             - name: Run tests
               run: |
                 pytest
-            - name: Pull Request Action
-              uses: vsoch/pull-request-action@master
-              env: 
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                BRANCH_PREFIX: "develop"
-                PULL_REQUEST_BRANCH: "nonprod"
+
+      
