@@ -21,8 +21,5 @@ async def create_item(item: Note_Item):
     mongodb_helper.insert_one(item.model_dump())
     return item
 
-
-
-
 if __name__ == "__main__":
     uvicorn.run(app, debug=True)
