@@ -45,7 +45,8 @@ jobs:
                 token: ${{ secrets.GITHUB_TOKEN }}
             - name: Merge Development branch into Non-Production
               run: |
-                git merge --no-ff ${{ github.actor }}/${{ github.ref }} -m "Merge branch '${{ github.actor }}/${{ github.ref }}' into nonprod"
+                git checkout nonprod
+                git merge develop
                 git push origin nonprod
 
 
