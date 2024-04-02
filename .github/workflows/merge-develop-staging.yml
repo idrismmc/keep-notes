@@ -39,12 +39,22 @@ jobs:
               # if tests pass, merge the PR created from Pull Request Action step above to nonprod branch 
               # rectify the merge conflicts if any
               # push the changes to nonprod branch
-              
-            - name: Merge PR
+              # error: pathspec 'nonprod' did not match any file(s) known to git
+              # Error: Process completed with exit code 1.
+              # we can't directly checkout to nonprod branch as it is not available on the container that github actions runs
+              # so we need to find a way to checkout to nonprod branch
+              # we can use the following command to checkout to nonprod branch
+            - name: Checkout to nonprod branch
               run: |
+                git fetch origin nonprod:nonprod
                 git checkout nonprod
+            - name: Merge develop to nonprod
+              run: |
                 git merge develop
+            - name: Push changes to nonprod
+              run: |
                 git push origin nonprod
+
 
 
 
