@@ -12,16 +12,8 @@ jobs:
               uses: vsoch/pull-request-action@master
               env: 
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                    GITHUB_REPOSITORY: ${{ github.repository }}
-                    GITHUB_ACTOR: ${{ github.actor }}
-                    GITHUB_REF: ${{ github.ref }}
-                    GITHUB_SHA: ${{ github.sha }}
-                    GITHUB_EVENT_NAME: ${{ github.event_name }}
-                    GITHUB_EVENT_PATH: ${{ github.event_path }}
-                    GITHUB_WORKSPACE: ${{ github.workspace }}
-                    GITHUB_HEAD_REF: develop
-                    GITHUB_BASE_REF: nonprod  
                     BRANCH_PREFIX: "develop"
-                    PR_TITLE: "Create Pull Request for develop to nonprod branch"
-                    PULL_REQUEST_BRANCH: "nonprod"             
+                    PULL_REQUEST_BRANCH: "nonprod"        
+                    PULL_REQUEST_BODY: "This is an automated pull request from develop to nonprod"
+                    PULL_REQUEST_TITLE: "Automated Pull Request from develop to nonprod"     
             
