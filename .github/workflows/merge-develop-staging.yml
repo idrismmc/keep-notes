@@ -30,9 +30,9 @@ jobs:
             - name: Run tests
               run: |
                 pytest
-            - name: Merge develop to nonprod
-              run: |
-                git checkout nonprod
-                git merge develop
-                git push origin nonprod
-
+            - name: Pull Request Action
+              uses: vsoch/pull-request-action@master
+              env: 
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                BRANCH_PREFIX: "develop"
+                PULL_REQUEST_BRANCH: "nonprod"
