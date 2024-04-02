@@ -45,7 +45,7 @@ jobs:
                 token: ${{ secrets.GITHUB_TOKEN }}
             - name: Merge Development branch into Non-Production
               run: |
-                git merge origin/develop
+                git merge origin/develop --allow-unrelated-histories
                 git push origin nonprod
 
 
