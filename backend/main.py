@@ -22,5 +22,6 @@ async def create_item(item: Note_Item):
     return item
 
 
+
 if __name__ == "__main__":
     uvicorn.run(app, debug=True)
