@@ -9,14 +9,36 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@v2
+            - name: Checkout code
+              uses: actions/checkout@v2
+            - name: Set up Python 3.10.4
+              uses: actions/setup-python@v2
+              with:
+                python-version: 3.10.4
+            - name: Install dependencies
+              run: |
+                python -m pip install --upgrade pip
+                pip install -r requirements.txt
+            - name: Start mongodb
+              uses: supercharge/mongodb-github-action@1.10.0
+              with:
+                mongodb_version: ${{ matrix.mongodb_version }}
             - name: Run unit tests
               run: |
                 pytest
-            - name: Automerge PR
-              uses: pascalgn/automerge-action@v0.9.0
+    automerge-dependabot:
+        name: Automerge Dependabot PR
+        needs: run-unit-test
+        if: github.actor == 'dependabot[bot]'
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+            pull-requests: write
+        steps:
+            - name: Merge PR
+              uses: fastify/github-action-merge-dependabot@3.6.4
               with:
                 github-token: ${{ secrets.GITHUB_TOKEN }}
-                commit-message: 'Automerge PR to Nonprod'
-                branch: nonprod
-                pull-number: ${{ github.event.number }}
-                # delete-branch: true
+                merge-method: rebase
+                target: minor
+            
