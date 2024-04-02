@@ -46,6 +46,8 @@ jobs:
               # we can use the following command to checkout to nonprod branch
             - name: Checkout to nonprod branch
               run: |
+                git config --global user.email ""
+                git config --global user.name "GitHub Actions"
                 git fetch origin nonprod:nonprod
                 git checkout nonprod
             - name: Merge develop to nonprod
