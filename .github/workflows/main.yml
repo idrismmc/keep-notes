@@ -36,5 +36,20 @@ jobs:
             - name: Run tests
               run: |
                 pytest
+              # if tests pass, merge develop to nonprod
+            - name: Merge develop to nonprod
+              if: success()
+              uses: actions/checkout@v3
+              with:
+                ref: nonprod
+                token: ${{ secrets.GITHUB_TOKEN }}
+            - name: Merge Development branch into Non-Production
+              run: |
+                git merge --no-ff ${{ github.event.before }} -m "Merge branch 'develop' into nonprod"
+                git push origin nonprod
+
+                
+
+              
 
       
