@@ -20,5 +20,8 @@ jobs:
                     GITHUB_EVENT_PATH: ${{ github.event_path }}
                     GITHUB_WORKSPACE: ${{ github.workspace }}
                     GITHUB_HEAD_REF: develop
-                    GITHUB_BASE_REF: nonprod                  
+                    GITHUB_BASE_REF: nonprod  
+                    BRANCH_PREFIX: "develop"
+                    PR_TITLE: "Create Pull Request for develop to nonprod branch"
+                    PULL_REQUEST_BRANCH: "nonprod"             
             
