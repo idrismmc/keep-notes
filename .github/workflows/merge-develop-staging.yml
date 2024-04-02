@@ -1,66 +1,26 @@
-#  I want to run the tests when I create a new PR to make sure that the code is working as expected.
-# once the test is successul merge the develop branch to nonprod branch
-# also spin up the mongodb docker as it is used to connect to it
-# docker run --name mongodb -p 27017:27017 -v ./data:/data/db -d mongodb/mongodb-enterprise-server:latest
-name: CI
+# when code is pushed to develop branch create a new Pull Request to nonprod branch
+
+name: Create PR to nonprod branch
 
 on:
   push:
     branches:
       - develop
 
-jobs: 
-    test_schedule: 
-        runs-on: ubuntu-latest
-        steps:
-            - name: Pull Request Action
-              uses: vsoch/pull-request-action@master
-              env: 
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                BRANCH_PREFIX: "develop"
-                PULL_REQUEST_BRANCH: "nonprod"
-            - name: Checkout code
-              uses: actions/checkout@v2
-            - name: Set up Python 3.10.4
-              uses: actions/setup-python@v2
-              with:
-                python-version: 3.10.4
-            - name: Install dependencies
-              run: |
-                python -m pip install --upgrade pip
-                pip install -r requirements.txt
-            - name: Start mongodb
-              uses: supercharge/mongodb-github-action@1.10.0
-              with:
-                mongodb_version: ${{ matrix.mongodb_version }}
-            - name: Run tests
-              run: |
-                pytest
-              # if tests pass, merge the PR created from Pull Request Action step above to nonprod branch 
-              # rectify the merge conflicts if any
-              # push the changes to nonprod branch
-              # error: pathspec 'nonprod' did not match any file(s) known to git
-              # Error: Process completed with exit code 1.
-              # we can't directly checkout to nonprod branch as it is not available on the container that github actions runs
-              # so we need to find a way to checkout to nonprod branch
-              # we can use the following command to checkout to nonprod branch
-            - name: Checkout to nonprod branch
-              run: |
-                git config --global user.email ""
-                git config --global user.name "GitHub Actions"
-                git fetch origin nonprod:nonprod
-                git checkout nonprod
-            - name: Merge develop to nonprod
-              run: |
-                git merge develop --allow-unrelated-histories
-            - name: Push changes to nonprod
-              run: |
-                git push origin nonprod
+jobs:
+  create_pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-
-
-
-
-              
-
-      
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'chore: create PR to nonprod branch'
+          title: 'chore: create PR to nonprod branch'
+          body: 'This PR is created automatically when code is pushed to develop branch'
+          branch: nonprod
+          base: main
+          labels: 'automated-pr'
