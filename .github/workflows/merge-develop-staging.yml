@@ -1,0 +1,33 @@
+#  I want to run the tests when I create a new PR to make sure that the code is working as expected.
+# once the test is successul merge the develop branch to nonprod branch
+
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs: 
+    test_schedule: 
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+            - name: Set up Python 3.10
+              uses: actions/setup-python@v2
+              with:
+                python-version: 3.10
+            - name: Install dependencies
+              run: |
+                python -m pip install --upgrade pip
+                pip install -r requirements.txt
+            - name: Run tests
+              run: |
+                pytest
+            - name: Merge develop to nonprod
+              run: |
+                git checkout nonprod
+                git merge develop
+                git push origin nonprod
+
