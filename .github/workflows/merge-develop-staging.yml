@@ -1,13 +1,10 @@
-#  I want to run the tests when I create a new PR to make sure that the code is working as expected.
-# once the test is successul merge the develop branch to nonprod branch
-# also spin up the mongodb docker as it is used to connect to it
-# docker run --name mongodb -p 27017:27017 -v ./data:/data/db -d mongodb/mongodb-enterprise-server:latest
+
 name: CI
 
 on:
   push:
     branches:
-      - develop
+      - develop1
 
 jobs: 
     test_schedule: 
@@ -39,12 +36,20 @@ jobs:
               # if tests pass, merge the PR created from Pull Request Action step above to nonprod branch 
               # rectify the merge conflicts if any
               # push the changes to nonprod branch
-              
-            - name: Merge PR
+              # error: pathspec 'nonprod' did not match any file(s) known to git
+              # Error: Process completed with exit code 1.
+              # we can't directly checkout to nonprod branch as it is not available on the container that github actions runs
+              # so we need to find a way to checkout to nonprod branch
+              # we can use the following command to checkout to nonprod branch
+              # also for some reason it leads to merge conflict always so we need to rectify the merge conflicts
+            - name: Checkout to nonprod branch
               run: |
+                git config --global user.email ""
+                git config --global user.name "GitHub Actions"
+                git fetch origin nonprod:nonprod
                 git checkout nonprod
-                git merge develop
-                git push origin nonprod
+            
+
 
 
 
